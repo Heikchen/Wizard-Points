@@ -1,0 +1,153 @@
+:root {
+  --primary-grey-color: #d9d9d9;
+  --secondary-grey-color: #303030;
+  --primary-red-color: #aa0024;
+}
+h2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+h3 {
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+button {
+  font-family: "Roboto", sans-serif;
+  color: var(--primary-red-color);
+  border-radius: 8px;
+  border: none;
+  width: 100px;
+  height: 50px;
+}
+input,
+p {
+  font-family: "Roboto", sans-serif;
+}
+.container {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: auto;
+}
+.player-selection-box,
+.choose-variante,
+.reset-box {
+  width: 100%;
+  min-height: 100px;
+  box-shadow: 0px 4px 20px var(--primary-grey-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: nowrap;
+}
+.points-box {
+  width: 100%;
+  min-height: 100px;
+  box-shadow: 0px 4px 20px var(--primary-grey-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.points-names {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+#name1,
+#name2,
+#name3,
+#name4,
+#name5,
+#name6 {
+  width: 75px;
+  margin-top: 25px;
+  border: none;
+  text-align: center;
+}
+.points-score {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+}
+.points-elements-1,
+.points-elements-2,
+.points-elements-3,
+.points-elements-4,
+.points-elements-5,
+.points-elements-6 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  border: 1px solid;
+  min-width: 75px;
+  margin-top: 15px;
+}
+
+#points1,
+#points2,
+#points3,
+#points4,
+#points5,
+#points6 {
+  min-width: 30px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+#trick-take-1,
+#trick-get-1,
+#trick-take-2,
+#trick-get-2,
+#trick-take-3,
+#trick-get-3,
+#trick-take-4,
+#trick-get-4,
+#trick-take-5,
+#trick-get-5,
+#trick-take-6,
+#trick-get-6 {
+  width: 15px;
+  border: none;
+  font-size: 16px;
+  border-left: 1px solid;
+}
+
+.winner-box {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  width: 300px;
+  height: 150px;
+  text-align: center;
+  padding: 20px;
+  margin: auto;
+  background-color: var(--primary-grey-color);
+}
+#winner-text {
+  border-bottom: 1px solid;
+  padding-bottom: 15px;
+}
+.winner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#new-game-btn,
+#ok-btn {
+  margin-top: 45px;
+  margin-left: 15px;
+  margin-right: 15px;
+  text-align: center;
+}
