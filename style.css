@@ -58,7 +58,6 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
 }
 #name1,
 #name2,
@@ -70,12 +69,24 @@ p {
   margin-top: 25px;
   border: none;
   text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 15px;
 }
 .points-score {
   display: flex;
-  justify-content: center;
-  gap: 12px;
+  justify-content: baseline;
   align-items: center;
+  margin-bottom: 25px;
+}
+.points-elements {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  border: 1px solid;
+  min-width: 76px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .points-elements-1,
 .points-elements-2,
@@ -84,11 +95,9 @@ p {
 .points-elements-5,
 .points-elements-6 {
   display: flex;
+  flex-direction: column;
   justify-content: flex-end;
   align-items: baseline;
-  border: 1px solid;
-  min-width: 75px;
-  margin-top: 15px;
 }
 
 #points1,
