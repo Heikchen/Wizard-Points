@@ -79,6 +79,54 @@ function sixPlayer() {
 buttonSixPlayer.addEventListener("click", sixPlayer);
 
 // Select if you like to play with advance variation( plus or minus 1) Stiche !== Roundnumber
+const buttonBeginner = document.getElementById("beginner");
+const buttonAdvance = document.getElementById("advance");
+const trickTake = document.querySelectorAll(
+  "#trick-take-1, #trick-take-2, #trick-take-3, #trick-take-4, #trick-take-5, #trick-take-6"
+);
+let counterRounds = 0;
+let resultTrickTake;
+let player;
+
+function checkEquality(equal, player) {
+  if (equal === false) {
+    for (let i = 0; i < player; i++) {
+      resultTrickTake += parseInt(trickTake[i].value);
+      counterRounds !== resultTrickTake;
+    }
+  }
+}
+
+function howManyPlayers() {
+  if (
+    !document.contains(pointElements[3]) &&
+    !document.contains(pointElements[4])
+  ) {
+    return (player = 3);
+  } else if (
+    !document.contains(pointElements[4]) &&
+    !document.contains(pointElements[5])
+  ) {
+    return (player = 4);
+  } else if (
+    document.contains(pointElements[3]) &&
+    document.contains(pointElements[4]) &&
+    !document.contains(pointElements[5])
+  ) {
+    return (player = 5);
+  } else if (document.contains(pointElements[5])) {
+    return (player = 6);
+  }
+}
+function beginnerButton() {
+  checkEquality(true, howManyPlayers());
+}
+buttonBeginner.addEventListener("click", beginnerButton);
+function advanceButton() {
+  checkEquality(false, howManyPlayers());
+}
+buttonAdvance.addEventListener("click", advanceButton);
+
 // Input for Names
 // 2 input fields: one for Angesagte Stiche / one for erhaltene Stiche
 // Button who start dealing cards - PopUp how is first (left)
