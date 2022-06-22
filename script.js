@@ -1,5 +1,4 @@
 // Select how many players: for three 20 Rounds, for four 15 Rounds, for five 12 Rounds and for six 10 Rounds.
-
 const pointElements = document.querySelectorAll(".points-elements");
 const buttonThreePlayer = document.getElementById("player3");
 const buttonFourPlayer = document.getElementById("player4");
@@ -128,6 +127,12 @@ function advanceButton() {
 buttonAdvance.addEventListener("click", advanceButton);
 
 // Input for Names
+for (let i = 0; i < nameInput.length; i++) {
+  nameInput[i].addEventListener("change", function () {
+    nameInput[i].disabled = true;
+  });
+}
+
 // 2 input fields: one for Angesagte Stiche / one for erhaltene Stiche
 // Button who start dealing cards - PopUp how is first (left)
 // count Points (if correct than 20 points + 10 for each Stich / else -10 for each Stich which is different)
