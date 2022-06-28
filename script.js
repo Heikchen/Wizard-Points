@@ -14,6 +14,10 @@ function createElements(rounds) {
   buttonFourPlayer.disabled = true;
   buttonFivePlayer.disabled = true;
   buttonSixPlayer.disabled = true;
+  pointElements[0].style.display = "flex";
+  pointElements[1].style.display = "flex";
+  pointElements[2].style.display = "flex";
+
   for (let i = 0; i < rounds; i++) {
     let element1 = pointElements[0].cloneNode(true);
     element1.id = "points-" + i + "-1";
@@ -30,6 +34,7 @@ function createElements(rounds) {
   pointElements[2].style.display = "none";
 
   if (rounds <= 15) {
+    pointElements[3].style.display = "flex";
     for (let i = 0; i < rounds; i++) {
       let element4 = pointElements[3].cloneNode(true);
       element4.id = "points-" + i + "-4";
@@ -38,6 +43,7 @@ function createElements(rounds) {
     pointElements[3].style.display = "none";
 
     if (rounds <= 12) {
+      pointElements[4].style.display = "flex";
       for (let i = 0; i < rounds; i++) {
         let element5 = pointElements[4].cloneNode(true);
         element5.id = "points-" + i + "-5";
@@ -47,6 +53,7 @@ function createElements(rounds) {
     pointElements[4].style.display = "none";
 
     if (rounds <= 10) {
+      pointElements[5].style.display = "flex";
       for (let i = 0; i < rounds; i++) {
         let element6 = pointElements[5].cloneNode(true);
         element6.id = "points-" + i + "-6";
@@ -58,12 +65,12 @@ function createElements(rounds) {
 }
 
 function threePlayer() {
-  pointElements[3].remove();
-  pointElements[4].remove();
-  pointElements[5].remove();
-  nameInput[3].remove();
-  nameInput[4].remove();
-  nameInput[5].remove();
+  pointElements[3].style.display = "none";
+  pointElements[4].style.display = "none";
+  pointElements[5].style.display = "none";
+  nameInput[3].hidden = true;
+  nameInput[4].hidden = true;
+  nameInput[5].hidden = true;
   createElements(20);
   buttonThreePlayer.disabled = false;
 }
@@ -71,18 +78,18 @@ function threePlayer() {
 buttonThreePlayer.addEventListener("click", threePlayer);
 
 function fourPlayer() {
-  pointElements[4].remove();
-  pointElements[5].remove();
-  nameInput[4].remove();
-  nameInput[5].remove();
+  pointElements[4].style.display = "none";
+  pointElements[5].style.display = "none";
+  nameInput[4].hidden = true;
+  nameInput[5].hidden = true;
   createElements(15);
   buttonFourPlayer.disabled = false;
 }
 buttonFourPlayer.addEventListener("click", fourPlayer);
 
 function fivePlayer() {
-  pointElements[5].remove();
-  nameInput[5].remove();
+  pointElements[5].style.display = "none";
+  nameInput[5].hidden = true;
   createElements(12);
   buttonFivePlayer.disabled = false;
 }
@@ -126,10 +133,7 @@ function howManyPlayers() {
   const pointsTrick5 = document.querySelectorAll(
     "#points-" + (counterRounds - 1) + "-6 >*"
   );
-  if (
-    !document.contains(pointElements[3]) &&
-    !document.contains(pointElements[4])
-  ) {
+  if (buttonThreePlayer.disabled === false) {
     player = 3;
     round = 20;
     pointsGetTrick = [pointsTrick0[2], pointsTrick1[2], pointsTrick2[2]];
@@ -142,10 +146,7 @@ function howManyPlayers() {
     ];
     advanceVariation = ["", "", ""];
     nameInputRandom = ["", "", ""];
-  } else if (
-    !document.contains(pointElements[4]) &&
-    !document.contains(pointElements[5])
-  ) {
+  } else if (buttonFourPlayer.disabled === false) {
     player = 4;
     round = 15;
     pointsGetTrick = [
@@ -174,11 +175,7 @@ function howManyPlayers() {
     ];
     advanceVariation = ["", "", "", ""];
     nameInputRandom = ["", "", "", ""];
-  } else if (
-    document.contains(pointElements[3]) &&
-    document.contains(pointElements[4]) &&
-    !document.contains(pointElements[5])
-  ) {
+  } else if (buttonFivePlayer.disabled === false) {
     player = 5;
     round = 12;
     pointsGetTrick = [
@@ -211,7 +208,7 @@ function howManyPlayers() {
     ];
     advanceVariation = ["", "", "", "", ""];
     nameInputRandom = ["", "", "", "", ""];
-  } else if (document.contains(pointElements[5])) {
+  } else if (buttonSixPlayer.disabled === false) {
     player = 6;
     round = 10;
     pointsGetTrick = [
@@ -256,7 +253,6 @@ let buttonActiveBeginner = false;
 let buttonActiveAdvance = false;
 buttonBeginner.addEventListener("click", function () {
   buttonAdvance.disabled = true;
-  buttonActiveBeginner = true;
   trickTaking();
 });
 buttonAdvance.addEventListener("click", function () {
@@ -277,7 +273,6 @@ for (let i = 0; i < nameInput.length; i++) {
 // 2 input fields: one for Angesagte Stiche / one for erhaltene Stiche
 // count Points (if correct than 20 points + 10 for each Stich / else -10 for each Stich which is different)
 let playerPoints = [0, 0, 0, 0, 0, 0];
-let playercount = 0;
 
 function trickTaking() {
   counterRounds++;
@@ -388,3 +383,27 @@ winnerOkayButton.addEventListener("click", closeWindow);
 whoIsFirstButton.addEventListener("click", closeWindow);
 
 // Reset Game and Reset Round
+const resetGameButton = document.getElementById("reset-game-btn");
+function resetGame() {
+  buttonThreePlayer.disabled = false;
+  buttonFourPlayer.disabled = false;
+  buttonFivePlayer.disabled = false;
+  buttonSixPlayer.disabled = false;
+  buttonAdvance.disabled = false;
+  buttonBeginner.disabled = false;
+  playerPoints = [0, 0, 0, 0, 0, 0];
+  counterRounds = 0;
+  for (i = 0; i < 6; i++) {
+    nameInput[i].value = "";
+    nameInput[i].disabled = false;
+    nameInput[i].hidden = false;
+    pointElements[i].style.display = "flex";
+  }
+
+  console.log(document.querySelectorAll(".points-elements"));
+  const elements = document.querySelectorAll(".points-elements");
+  elements.forEach((el) => {
+    el.remove();
+  });
+}
+resetGameButton.addEventListener("click", resetGame);
