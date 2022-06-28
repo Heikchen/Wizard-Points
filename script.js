@@ -275,6 +275,7 @@ for (let i = 0; i < nameInput.length; i++) {
 }
 
 // 2 input fields: one for Angesagte Stiche / one for erhaltene Stiche
+// count Points (if correct than 20 points + 10 for each Stich / else -10 for each Stich which is different)
 let playerPoints = [0, 0, 0, 0, 0, 0];
 let playercount = 0;
 
@@ -297,7 +298,6 @@ function trickTaking() {
       }
       if (buttonActiveAdvance) {
         const checkFirstIndex = advanceVariation.indexOf("");
-        //const checkLastIndex = advanceVariation.lastIndexOf("");
         console.log("advance is on");
         if (resultTrickTake === counterRounds && checkFirstIndex === -1) {
           console.log("choose another Trick");
@@ -331,16 +331,20 @@ function trickTaking() {
       console.log(goToNextRound);
       goToNextRound[i] = pointsEachRound[i].innerText;
       console.log(goToNextRound);
-      if (!goToNextRound.includes("") && counterRounds < round) {
+      if (!goToNextRound.includes("") && counterRounds < 2) {
         console.log("next Round");
         newRound();
-      } else if (!goToNextRound.includes("") && counterRounds === round) {
-        let whoIsTheWinner = playerPoints[0];
+      } else if (!goToNextRound.includes("") && counterRounds === 2) {
+        let whoIsTheWinner = 0;
         for (let i = 0; i < playerPoints.length; i++) {
           if (whoIsTheWinner < playerPoints[i]) {
             whoIsTheWinner = playerPoints[i];
+            whoWon = [];
           }
-          console.log("the Winner is: " + whoIsTheWinner);
+          if (whoIsTheWinner === playerPoints[i]) {
+            whoWon.push(nameInput[i].value);
+          }
+          whoIsTheWinnerBox(whoWon);
         }
       }
     });
@@ -363,11 +367,24 @@ function whoIsFirst(i) {
   }
 }
 
-function closeWindow() {
-  whoIsFirstBox.style.display = "none";
+// after Number of Rounds who is the Winner?
+const winnerBox = document.getElementById("winner-box");
+const winnerButtonNextGame = document.getElementById("new-game-btn");
+const winnerOkayButton = document.getElementById("ok-btn");
+function whoIsTheWinnerBox(whoWon) {
+  winnerBox.style.display = "block";
+  const winnerMessage = document.getElementById("winner-text");
+  winnerMessage.innerText = `Congratulation: ${whoWon}`;
 }
+
+function closeWindow() {
+  if (whoIsFirstBox.style.display === "block") {
+    whoIsFirstBox.style.display = "none";
+  } else if (winnerBox.style.display === "block") {
+    winnerBox.style.display = "none";
+  }
+}
+winnerOkayButton.addEventListener("click", closeWindow);
 whoIsFirstButton.addEventListener("click", closeWindow);
 
-// count Points (if correct than 20 points + 10 for each Stich / else -10 for each Stich which is different)
-// after Number of Rounds who is the Winner?
 // Reset Game and Reset Round
