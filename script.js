@@ -10,6 +10,10 @@ const points = document.querySelectorAll(
 );
 
 function createElements(rounds) {
+  buttonThreePlayer.disabled = true;
+  buttonFourPlayer.disabled = true;
+  buttonFivePlayer.disabled = true;
+  buttonSixPlayer.disabled = true;
   for (let i = 0; i < rounds; i++) {
     let element1 = pointElements[0].cloneNode(true);
     element1.id = "points-" + i + "-1";
@@ -51,11 +55,6 @@ function createElements(rounds) {
       pointElements[5].style.display = "none";
     }
   }
-
-  buttonThreePlayer.disabled = true;
-  buttonFourPlayer.disabled = true;
-  buttonFivePlayer.disabled = true;
-  buttonSixPlayer.disabled = true;
 }
 
 function threePlayer() {
@@ -66,7 +65,7 @@ function threePlayer() {
   nameInput[4].remove();
   nameInput[5].remove();
   createElements(20);
-  trickTaking();
+  buttonThreePlayer.disabled = false;
 }
 
 buttonThreePlayer.addEventListener("click", threePlayer);
@@ -77,7 +76,7 @@ function fourPlayer() {
   nameInput[4].remove();
   nameInput[5].remove();
   createElements(15);
-  trickTaking();
+  buttonFourPlayer.disabled = false;
 }
 buttonFourPlayer.addEventListener("click", fourPlayer);
 
@@ -85,13 +84,13 @@ function fivePlayer() {
   pointElements[5].remove();
   nameInput[5].remove();
   createElements(12);
-  trickTaking();
+  buttonFivePlayer.disabled = false;
 }
 buttonFivePlayer.addEventListener("click", fivePlayer);
 
 function sixPlayer() {
   createElements(10);
-  trickTaking();
+  buttonSixPlayer.disabled = false;
 }
 buttonSixPlayer.addEventListener("click", sixPlayer);
 
@@ -141,6 +140,8 @@ function howManyPlayers() {
       pointsTrick1[0].innerText,
       pointsTrick2[0].innerText,
     ];
+    advanceVariation = ["", "", ""];
+    nameInputRandom = ["", "", ""];
   } else if (
     !document.contains(pointElements[4]) &&
     !document.contains(pointElements[5])
@@ -171,6 +172,8 @@ function howManyPlayers() {
       pointsTrick2[0].innerText,
       pointsTrick3[0].innerText,
     ];
+    advanceVariation = ["", "", "", ""];
+    nameInputRandom = ["", "", "", ""];
   } else if (
     document.contains(pointElements[3]) &&
     document.contains(pointElements[4]) &&
@@ -206,6 +209,8 @@ function howManyPlayers() {
       pointsTrick3[0].innerText,
       pointsTrick4[0].innerText,
     ];
+    advanceVariation = ["", "", "", "", ""];
+    nameInputRandom = ["", "", "", "", ""];
   } else if (document.contains(pointElements[5])) {
     player = 6;
     round = 10;
@@ -241,6 +246,8 @@ function howManyPlayers() {
       pointsTrick4[0].innerText,
       pointsTrick5[0].innerText,
     ];
+    advanceVariation = ["", "", "", "", "", ""];
+    nameInputRandom = ["", "", "", "", "", ""];
   }
   console.log(player);
   console.log(round);
@@ -250,16 +257,20 @@ let buttonActiveAdvance = false;
 buttonBeginner.addEventListener("click", function () {
   buttonAdvance.disabled = true;
   buttonActiveBeginner = true;
+  trickTaking();
 });
 buttonAdvance.addEventListener("click", function () {
   buttonBeginner.disabled = true;
   buttonActiveAdvance = true;
+  trickTaking();
+  console.log(buttonActiveAdvance);
 });
 
 // Input for Names
 for (let i = 0; i < nameInput.length; i++) {
   nameInput[i].addEventListener("change", function () {
     nameInput[i].disabled = true;
+    whoIsFirst(i);
   });
 }
 
@@ -270,6 +281,8 @@ let playercount = 0;
 function trickTaking() {
   counterRounds++;
   howManyPlayers();
+  resultTrickTake = 0;
+
   console.log(pointsGetTrick.value);
   for (let i = 0; i < player; i++) {
     pointsGetTrick[i].disabled = true;
@@ -277,13 +290,26 @@ function trickTaking() {
       pointsTakeTrick[i].disabled = true;
       let trickTakeValue = pointsTakeTrick[i].value;
       let trickTakeNumber = parseInt(trickTakeValue);
+      advanceVariation[i] = trickTakeValue;
       resultTrickTake += trickTakeNumber;
       if (pointsTakeTrick[i].disabled === true) {
         pointsGetTrick[i].disabled = false;
       }
+      if (buttonActiveAdvance) {
+        const checkFirstIndex = advanceVariation.indexOf("");
+        //const checkLastIndex = advanceVariation.lastIndexOf("");
+        console.log("advance is on");
+        if (resultTrickTake === counterRounds && checkFirstIndex === -1) {
+          console.log("choose another Trick");
+          pointsGetTrick[i].disabled = true;
+          pointsTakeTrick[i].disabled = false;
+          resultTrickTake -= trickTakeNumber;
+          console.log(resultTrickTake);
+          pointsTakeTrick[i].value = "";
+        }
+      }
     });
   }
-
   for (let i = 0; i < player; i++) {
     pointsGetTrick[i].addEventListener("change", function () {
       pointsGetTrick[i].disabled = true;
@@ -320,12 +346,28 @@ function trickTaking() {
     });
   }
 }
-
 function newRound() {
   trickTaking();
 }
-
 // Button who start dealing cards - PopUp how is first (left)
+const whoIsFirstBox = document.getElementById("who-is-first-box");
+const whoIsFirstButton = document.getElementById("beginn-btn");
+function whoIsFirst(i) {
+  nameInputRandom[i] = nameInput[i].value;
+  console.log(nameInputRandom);
+  if (!nameInputRandom.includes("")) {
+    nameInputRandom.sort(() => Math.random() - 0.5);
+    whoIsFirstBox.style.display = "block";
+    const whoIsFirstMessage = document.getElementById("who-is-first-text");
+    whoIsFirstMessage.innerText = `You go first: ${nameInputRandom[0]}`;
+  }
+}
+
+function closeWindow() {
+  whoIsFirstBox.style.display = "none";
+}
+whoIsFirstButton.addEventListener("click", closeWindow);
+
 // count Points (if correct than 20 points + 10 for each Stich / else -10 for each Stich which is different)
 // after Number of Rounds who is the Winner?
 // Reset Game and Reset Round
