@@ -8,12 +8,14 @@ const nameInput = document.querySelectorAll(".name");
 const points = document.querySelectorAll(
   "#points1, #points2, #points3, #points4, #points5, #points6"
 );
-
+const pointsBox = document.getElementsByClassName("points-box");
+const variationBox = document.getElementsByClassName("choose-variante");
 function createElements(rounds) {
   buttonThreePlayer.disabled = true;
   buttonFourPlayer.disabled = true;
   buttonFivePlayer.disabled = true;
   buttonSixPlayer.disabled = true;
+  variationBox[0].style.display = "flex";
   pointElements[0].style.display = "flex";
   pointElements[1].style.display = "flex";
   pointElements[2].style.display = "flex";
@@ -253,13 +255,14 @@ let buttonActiveBeginner = false;
 let buttonActiveAdvance = false;
 buttonBeginner.addEventListener("click", function () {
   buttonAdvance.disabled = true;
+  pointsBox[0].style.display = "flex";
   trickTaking();
 });
 buttonAdvance.addEventListener("click", function () {
   buttonBeginner.disabled = true;
   buttonActiveAdvance = true;
+  pointsBox[0].style.display = "flex";
   trickTaking();
-  console.log(buttonActiveAdvance);
 });
 
 // Input for Names
@@ -293,9 +296,7 @@ function trickTaking() {
       }
       if (buttonActiveAdvance) {
         const checkFirstIndex = advanceVariation.indexOf("");
-        console.log("advance is on");
         if (resultTrickTake === counterRounds && checkFirstIndex === -1) {
-          console.log("choose another Trick");
           pointsGetTrick[i].disabled = true;
           pointsTakeTrick[i].disabled = false;
           resultTrickTake -= trickTakeNumber;
@@ -323,13 +324,11 @@ function trickTaking() {
         pointsEachRound[i].innerText = playerPoints[i];
         pointsEachRound[i].disabled = true;
       }
-      console.log(goToNextRound);
       goToNextRound[i] = pointsEachRound[i].innerText;
-      console.log(goToNextRound);
-      if (!goToNextRound.includes("") && counterRounds < 2) {
+      if (!goToNextRound.includes("") && counterRounds < round) {
         console.log("next Round");
         newRound();
-      } else if (!goToNextRound.includes("") && counterRounds === 2) {
+      } else if (!goToNextRound.includes("") && counterRounds === round) {
         let whoIsTheWinner = 0;
         for (let i = 0; i < playerPoints.length; i++) {
           if (whoIsTheWinner < playerPoints[i]) {
@@ -353,7 +352,6 @@ const whoIsFirstBox = document.getElementById("who-is-first-box");
 const whoIsFirstButton = document.getElementById("beginn-btn");
 function whoIsFirst(i) {
   nameInputRandom[i] = nameInput[i].value;
-  console.log(nameInputRandom);
   if (!nameInputRandom.includes("")) {
     nameInputRandom.sort(() => Math.random() - 0.5);
     whoIsFirstBox.style.display = "block";
@@ -391,6 +389,7 @@ function resetGame() {
   buttonSixPlayer.disabled = false;
   buttonAdvance.disabled = false;
   buttonBeginner.disabled = false;
+
   playerPoints = [0, 0, 0, 0, 0, 0];
   counterRounds = 0;
   for (i = 0; i < 6; i++) {
@@ -399,11 +398,36 @@ function resetGame() {
     nameInput[i].hidden = false;
     pointElements[i].style.display = "flex";
   }
-
-  console.log(document.querySelectorAll(".points-elements"));
   const elements = document.querySelectorAll(".points-elements");
   elements.forEach((el) => {
     el.remove();
   });
+  pointsBox[0].style.display = "none";
+  variationBox[0].style.display = "none";
 }
 resetGameButton.addEventListener("click", resetGame);
+winnerButtonNextGame.addEventListener("click", resetGame);
+const resetRoundButton = document.getElementById("reset-round-btn");
+function resetRound() {
+  for (i = 0; i < player; i++) {
+    let trickGetValue = pointsGetTrick[i].value;
+    let trickGetNumber = parseInt(trickGetValue);
+    let trickTakeValue = pointsTakeTrick[i].value;
+    let trickTakeNumber = parseInt(trickTakeValue);
+    if (trickGetValue === "") {
+      playerPoints[i] = playerPoints[i];
+    } else if (trickTakeNumber !== trickGetNumber) {
+      let resultTricks = trickGetNumber - trickTakeNumber;
+      playerPoints[i] -= -Math.abs(resultTricks * 10);
+    } else if (trickTakeNumber === trickGetNumber) {
+      playerPoints[i] -= 20 + trickTakeNumber * 10;
+    }
+    pointsGetTrick[i].disabled = true;
+    pointsTakeTrick[i].disabled = false;
+    console.log("beginn new round");
+    pointsTakeTrick[i].value = "";
+    pointsGetTrick[i].value = "";
+    pointsEachRound[i].innerText = "";
+  }
+}
+resetRoundButton.addEventListener("click", resetRound);
